@@ -6,3 +6,4 @@ logs/
 *.DS_Store
 *.war
 *.ear
+pom.properties
