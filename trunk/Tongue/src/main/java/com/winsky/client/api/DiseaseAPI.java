@@ -48,6 +48,8 @@ public class DiseaseAPI {
             UserBean user = userService.getByName(userName);
             if (user != null) {
                 diseaseBean.setOpenId(user.getOpenId());
+            } else {
+                diseaseBean.setOpenId("-1");//用户不存在，设置一个不存在的openId让接口返回空list
             }
         }
         if (date != null) diseaseBean.setCreateTime(TimeUtil.dateStrToLong(date));
