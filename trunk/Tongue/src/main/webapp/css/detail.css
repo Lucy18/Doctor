@@ -1,0 +1,234 @@
+.header-middle {
+    padding: 10px 0;
+}
+
+.section-heading {
+    font-weight: bold;
+    margin: 0 0 10px;
+    position: relative;
+    text-align: center;
+    margin-top:20px;
+    width:93%;
+    margin-left:11px;
+    margin-bottom: 20px;
+}
+
+.section-heading h3 {
+    background: #f7f7f7 none repeat scroll 0 0;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 0;
+    padding: 0 15px;
+    position: relative;
+    text-transform: uppercase;
+    width: auto;
+    z-index: 1;
+    top:2px;
+}
+
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    border-radius:6px;
+}
+
+.btn-default:focus, .btn-default.focus {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #8c8c8c
+}
+
+.btn-default:hover {
+    color: #ffffff;
+    background-color: #6699CC;
+    border-color: #adadad
+}
+
+.btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+    color: #ffffff;
+    background-color: #6699CC;
+    border-color: #adadad
+}
+
+.btn-default:active:hover, .btn-default.active:hover, .open > .dropdown-toggle.btn-default:hover, .btn-default:active:focus, .btn-default.active:focus, .open > .dropdown-toggle.btn-default:focus, .btn-default:active.focus, .btn-default.active.focus, .open > .dropdown-toggle.btn-default.focus {
+    color: #ffffff;
+    background-color: #6699CC;
+    border-color: #8c8c8c
+}
+
+.btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+    background-image: none
+}
+
+.btn-default.disabled:hover, .btn-default[disabled]:hover, fieldset[disabled] .btn-default:hover, .btn-default.disabled:focus, .btn-default[disabled]:focus, fieldset[disabled] .btn-default:focus, .btn-default.disabled.focus, .btn-default[disabled].focus, fieldset[disabled] .btn-default.focus {
+    background-color: #fff;
+    border-color: #ccc
+}
+
+.btn-default .badge {
+    color: #fff;
+    background-color: #333
+}
+
+.return{
+    margin-left:12px;
+}
+
+.test {
+    position: relative;
+    width: 400px;
+    height: 460px;
+    border-radius: 10px;
+    margin-left: 60px;
+    margin-top:-46px;
+    margin-bottom:54px;
+}
+
+.test:after {
+    content: '';
+    position: absolute;
+    top: 30px;
+    left: -40px;
+    border: solid #f7f7f7;
+    border-width: 10px 20px;
+    border-right-color: #CCCCCC;
+    background: inherit;
+    background-clip: border-box;
+    background-origin: border-box;
+    background-position: 20px -30px;
+}
+
+.tagtest{
+    margin-left: 60px;
+    margin-top:-46px;
+    margin-bottom:54px;
+}
+
+.tag{
+    width:8%;
+    display: inline-block;
+    position:relative;
+}
+
+.tag a:hover{
+    cursor:default;
+}
+
+.addBtn{
+    display: inline-block;
+    height:32px;
+    width:33px;
+    position:relative;
+    top:-1px;
+    border-radius: 0px;
+    padding-top:5px;
+    padding-left:10px;
+}
+
+.testText{
+    height: auto;
+    padding-left:20px;
+    padding-right:20px;
+    padding-top:20px;
+    padding-bottom:10px;
+}
+
+.t1:after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: -40px;
+    border: solid #f7f7f7;
+    border-width: 10px 20px;
+    border-right-color: #CCCCCC;
+    background: inherit;
+    background-clip: border-box;
+    background-origin: border-box;
+    background-position: 20px -30px;
+}
+
+.chat{
+    margin-top:-30px;
+    margin-left:20px;
+    position:relative;
+}
+.patient{
+    width:30px;
+    height:45px;
+    z-index: 1;
+    position:relative;
+    top:10px;
+}
+
+.chatright{
+    position:relative;
+}
+
+.doctor{
+    width:45px;
+    height:45px;
+    z-index: 1;
+    margin-top:-180px;
+    position:relative;
+    margin-left:90%;
+}
+
+.test1 {
+    position: relative;
+    width: 400px;
+    border-radius: 10px;
+    margin-top:0px;
+    margin-bottom:34px;
+    margin-right:0px;
+    margin-left:37%;
+}
+
+.test1:after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: -40px;
+    border: solid #f7f7f7;
+    border-width: 10px 20px;
+    border-left-color: #CCCCCC;
+    background: inherit;
+    background-clip: border-box;
+    background-origin: border-box;
+    background-position: 20px -30px;
+}
+
+.time{
+    position:relative;
+    margin-left: 325px;
+    top:-52px;
+    margin-bottom:4px;
+}
+
+.timeright{
+    margin-left:69.5%;
+    position:relative;
+    top:-52px;
+}
+
+.reply{
+    width:400px;
+    margin-left:33%;
+    height:100px;
+    display:inline-block;
+}
+
+.replyBtn{
+    margin-left:15px;
+    margin-top:-37px;
+    display:inline-block;
+
+}
+
+.delete{
+    position:absolute;
+    top:-3px;
+    right:4px;
+    cursor:pointer;
+}
