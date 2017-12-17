@@ -23,16 +23,16 @@ public class BaseDAO {
      * @param obj
      * @return
      */
-    public Long save(Object obj) {
+    public long save(Object obj) {
         Object[] bean_sql = PersistenceUtil.createInsertSQL(obj);
         if ((bean_sql == null) || (bean_sql.length == 0)) {
-            return null;
+            return 0;
         }
         long id = j.saveForGeneratedKey(bean_sql[0].toString(), (Object[]) bean_sql[1]);
         if (id > 0) {
             return id;
         } else {
-            return null;
+            return 0;
         }
     }
 

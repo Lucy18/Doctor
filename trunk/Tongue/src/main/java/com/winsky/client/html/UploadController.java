@@ -1,6 +1,7 @@
 package com.winsky.client.html;
 
 import com.winsky.APIUtil;
+import com.winsky.Config;
 import com.winsky.utils.FileUploadUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -22,13 +23,13 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/file")
 public class UploadController {
-    private static final String TARGET_DIR = "D:/";
+    private static final String TARGET_DIR = Config.PIC_PATH;
 
     @RequestMapping("/upload")
     @ResponseBody
     public Object upload(HttpServletRequest request) {
         String msg = StringUtils.EMPTY;
-        boolean result = false;
+        String fileUrl = null;
 
         //创建一个通用的多部分解析器
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
@@ -37,23 +38,24 @@ public class UploadController {
             MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
             //取得request中的所有文件名
             Iterator<String> iter = multiRequest.getFileNames();
-            while (iter.hasNext()) {
-                MultipartFile file = multiRequest.getFile(iter.next());
-                if (FileUploadUtil.allowUpload(file.getContentType())) {
-                    result = FileUploadUtil.upload(file, TARGET_DIR);
-                } else {
-                    msg = "文件类型不合法,只能是 jpg、gif、png、jpeg 类型！";
-                }
+            // 一次只允许上传一个文件
+            // while (iter.hasNext()) {
+            MultipartFile file = multiRequest.getFile(iter.next());
+            if (FileUploadUtil.allowUpload(file.getContentType())) {
+                fileUrl = FileUploadUtil.upload(file, TARGET_DIR);
+            } else {
+                msg = "文件类型不合法,只能是 jpg、gif、png、jpeg 类型！";
             }
-            if (!result && Objects.equals(msg, "")) {
+            // }
+            if (fileUrl == null && Objects.equals(msg, "")) {
                 msg = "文件上传失败";
             }
         } else {
             msg = "没有要上传的文件";
         }
 
-        if (result) {
-            return APIUtil.genSuccessResult();
+        if (fileUrl != null) {
+            return APIUtil.genDataResult(fileUrl);
         } else {
             return APIUtil.genErrorResult(msg);
         }

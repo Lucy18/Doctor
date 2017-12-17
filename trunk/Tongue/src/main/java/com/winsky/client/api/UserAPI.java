@@ -1,11 +1,14 @@
 package com.winsky.client.api;
 
+import com.alibaba.fastjson.JSONObject;
 import com.winsky.APIUtil;
+import com.winsky.bean.UserBean;
+import com.winsky.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
 
 /**
  * author: ysk13
@@ -15,32 +18,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/api/user")
 public class UserAPI {
-    /**
-     * 普通风格的url访问形式
-     * http://localhost:8080/project_demo/api/user/getAll?name=1&password=2
-     *
-     * @param name
-     * @param password
-     * @return
-     */
-    @RequestMapping(value = "/getAll")
+    @Resource
+    private UserService userService;
+
+    @RequestMapping(value = "/getUser")
     @ResponseBody
-    public Object getAll(String name, String password) {
-        return APIUtil.genDataResult("from normal api: name=" + name + ",password=" + password);
+    public Object getUser(String openId) {
+        UserBean user = userService.getUser(openId);
+        return APIUtil.genDataResult(user);
     }
 
-    /**
-     * Rest风格的url访问形式
-     * http://localhost:8080/project_demo/api/user/getAllRest/name/1/password/2
-     *
-     * @param name
-     * @param password
-     * @return
-     */
-    @RequestMapping(value = "/getAllRest/name/{name}/password/{password}", method = RequestMethod.GET)
+    @RequestMapping(value = "/add")
     @ResponseBody
-    public Object getAllRest(@PathVariable String name, @PathVariable String password) {
-        System.out.println(name + ":" + password);
-        return APIUtil.genDataResult("from REST api: name=" + name + ",password=" + password);
+    public Object add(String json) {
+        UserBean userBean = JSONObject.parseObject(json, UserBean.class);
+        boolean result = userService.saveOrUpdate(userBean);
+        return APIUtil.genBooleanResult(result);
     }
 }

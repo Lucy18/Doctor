@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TaskDemo {
-    // @Scheduled(cron = "*/5 * * * * ? ") // 间隔5秒执行
     public void taskCycle() {
-        System.out.println("SpringMVC框架配置的定时任务");
     }
 }

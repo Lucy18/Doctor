@@ -12,6 +12,5 @@ import org.springframework.stereotype.Component;
 @Component
 public class Init implements ApplicationListener<ContextRefreshedEvent> {
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        System.out.println("启动完后执行该方法");
     }
 }

@@ -1,5 +1,6 @@
 package com.winsky.utils;
 
+import com.winsky.Config;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -17,8 +18,13 @@ import java.util.Random;
 public class FileUploadUtil {
     private static final List<String> ALLOW_TYPES = Arrays.asList("image/jpg", "image/jpeg", "image/png", "image/gif");
 
-    public static boolean upload(MultipartFile file, String targetDir) {
-        boolean result = true;
+    /**
+     * @param file
+     * @param targetDir
+     * @return
+     */
+    public static String upload(MultipartFile file, String targetDir) {
+        String fileUrl = null;
         if (file != null) {
             String myFileName = file.getOriginalFilename();
             if (!Objects.equals(myFileName.trim(), "")) {
@@ -28,13 +34,14 @@ public class FileUploadUtil {
                 File localFile = new File(path);
                 try {
                     file.transferTo(localFile);
+
+                    fileUrl = Config.PIC_BASE_URL + fileName;
                 } catch (IOException e) {
-                    result = false;
                     e.printStackTrace();
                 }
             }
         }
-        return result;
+        return fileUrl;
     }
 
     //文件重命名
@@ -47,5 +54,9 @@ public class FileUploadUtil {
     //校验文件类型是否是被允许的
     public static boolean allowUpload(String postfix) {
         return ALLOW_TYPES.contains(postfix);
+    }
+
+    public static String buildUrl(String path) {
+        return Config.HOST + path.replace(Config.PIC_PATH, "");
     }
 }
