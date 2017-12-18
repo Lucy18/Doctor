@@ -3,6 +3,8 @@ package com.winsky.dao;
 import com.winsky.bean.UserBean;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * author: ysk13
  * date: 2017-5-3
@@ -20,8 +22,8 @@ public class UserDAO extends BaseDAO {
         return j.execute(sql, user.getName(), user.getAge(), user.getSex(), user.getMobile(), user.getJob(), user.getHistory(), user.getOpenId());
     }
 
-    public UserBean getByName(String name) {
-        String sql = "select * from user where name=? limit 1";
-        return j.queryForBean(UserBean.class, sql, name);
+    public List<UserBean> getByName(String name) {
+        String sql = "select * from user where name=?";
+        return j.queryForList(UserBean.class, sql, name);
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,37 +39,53 @@ public class DiseaseAPI {
     @RequestMapping(value = "/getDiseases")
     @ResponseBody
     public Object getDiseases(Integer pageNo, Integer pageSize, String sortName, String sortOrder, String userName, String date) {
-        Page page = new Page();
-        if (pageNo != null) page.setPageNo(pageNo);
-        if (pageSize != null) page.setPageSize(pageSize);
-        if (sortName != null) page.setSortname(sortName);
-        if (sortOrder != null) page.setSortorder(sortOrder);
-        DiseaseBean diseaseBean = new DiseaseBean();
+        Page page = genPage(pageNo, pageSize, sortName, sortOrder);
+        List<String> openIds = null;
         if (userName != null) {
-            UserBean user = userService.getByName(userName);
-            if (user != null) {
-                diseaseBean.setOpenId(user.getOpenId());
-            } else {
-                diseaseBean.setOpenId("-1");//用户不存在，设置一个不存在的openId让接口返回空list
-            }
+            openIds = userService.getOpenIdByName(userName);
         }
-        if (date != null) diseaseBean.setCreateTime(TimeUtil.dateStrToLong(date));
-
-        List<DiseaseVO> diseases = diseaseService.getCoverList(page, diseaseBean);
-        return APIUtil.genPageDataObject(diseases, page);
+        return getDiseases(page, openIds, date);
     }
 
     @RequestMapping(value = "/getOwnDiseases")
     @ResponseBody
     public Object getOwnDiseases(Integer pageNo, Integer pageSize, String sortName, String sortOrder, String openId) {
-        String name = null;
+        List<String> openIds = new ArrayList<>();
         if (StringUtils.isNotEmpty(openId)) {
-            UserBean user = userService.getUser(openId);
-            if (user != null) {
-                name = user.getName();
-            }
+            openIds.add(openId);
         }
-        return getDiseases(pageNo, pageSize, sortName, sortOrder, name, null);
+        Page page = genPage(pageNo, pageSize, sortName, sortOrder);
+        return getDiseases(page, openIds, null);
+    }
+
+    private Object getDiseases(Page page, List<String> openIds, String date) {
+        DiseaseBean diseaseBean = new DiseaseBean();
+        if (date != null) diseaseBean.setCreateTime(TimeUtil.dateStrToLong(date));
+
+        if (openIds == null) {
+            List<DiseaseVO> diseases = diseaseService.getCoverList(page, diseaseBean);
+            return APIUtil.genPageDataObject(diseases, page);
+        } else {
+            List<DiseaseVO> result = new ArrayList<>();
+            for (String openId : openIds) {
+                diseaseBean.setOpenId(openId);
+                List<DiseaseVO> diseases = diseaseService.getCoverList(page, diseaseBean);
+                result.addAll(diseases);
+            }
+            return APIUtil.genPageDataObject(result, page);
+        }
+    }
+
+    private Page genPage(Integer pageNo, Integer pageSize, String sortName, String sortOrder) {
+        Page page = null;
+        if (pageNo != null || pageSize != null || sortName != null || sortOrder != null) {
+            page = new Page();
+            if (pageNo != null) page.setPageNo(pageNo);
+            if (pageSize != null) page.setPageSize(pageSize);
+            if (sortName != null) page.setSortname(sortName);
+            if (sortOrder != null) page.setSortorder(sortOrder);
+        }
+        return page;
     }
 
     @RequestMapping(value = "/getUserInfo")
@@ -101,17 +118,17 @@ public class DiseaseAPI {
         chatBean.setCreateTime(TimeUtil.getCurrentLong());
 
         List<PhotoBean> photoBeans = photoService.transferPhotos(photos);
+        final long[] diseaseId = {-1};
         boolean result = new Transaction() {
             @Override
             public void run() throws Exception {
-                diseaseService.insertDisease(diseaseBean, chatBean, photoBeans);
+                diseaseId[0] = diseaseService.insertDisease(diseaseBean, chatBean, photoBeans);
             }
         }.start();
         if (result) {
-            return APIUtil.genSuccessResult();
+            return APIUtil.genDataResult(diseaseId[0]);
         } else {
             return APIUtil.genErrorResult("创建问诊记录失败");
         }
-
     }
 }

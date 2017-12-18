@@ -67,7 +67,7 @@ public class DiseaseService {
         return diseaseDAO.select(DiseaseBean.class, diseaseId);
     }
 
-    public void insertDisease(DiseaseBean diseaseBean, ChatBean chatBean, List<PhotoBean> photoBeans) throws Exception {
+    public long insertDisease(DiseaseBean diseaseBean, ChatBean chatBean, List<PhotoBean> photoBeans) throws Exception {
         long diseaseId = save(diseaseBean);
         if (diseaseId <= 0) {
             throw new Exception("创建问诊单失败");
@@ -75,5 +75,6 @@ public class DiseaseService {
             chatBean.setDiseaseId(diseaseId);
             chatService.insertChat(chatBean, photoBeans);
         }
+        return diseaseId;
     }
 }

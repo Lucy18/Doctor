@@ -49,11 +49,16 @@ public class DiseaseDAO extends BaseDAO {
         }
         sql = sql + sqlWhere;
         Object[] pram = objectList.toArray();
-        if (page.getSortname() != null && page.getSortorder() != null) {
-            sql += " order by " + page.getSortname() + " " + page.getSortorder();
+
+        if (page != null) {
+            if (page.getSortname() != null && page.getSortorder() != null) {
+                sql += " order by " + page.getSortname() + " " + page.getSortorder();
+            }
+            page.setTotalRows(j.queryForInteger("select count(*) from disease a " + sqlWhere, pram));
+            return j.queryForPageList(DiseaseBean.class, sql, page.getPageNo(), page.getPageSize(), pram);
+        } else {
+            return j.queryForList(DiseaseBean.class, sql, pram);
         }
-        page.setTotalRows(j.queryForInteger("select count(*) from disease a " + sqlWhere, pram));
-        return j.queryForPageList(DiseaseBean.class, sql, page.getPageNo(), page.getPageSize(), pram);
     }
 
 

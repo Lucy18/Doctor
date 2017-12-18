@@ -6,8 +6,11 @@ import com.winsky.dao.UserDAO;
 import com.winsky.enums.UserTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * author: ysk13
@@ -50,7 +53,12 @@ public class UserService {
         return user != null;
     }
 
-    public UserBean getByName(String name) {
-        return userDAO.getByName(name);
+    public List<String> getOpenIdByName(String name) {
+        List<String> result = new ArrayList<>();
+        List<UserBean> users = userDAO.getByName(name);
+        if (!CollectionUtils.isEmpty(users)) {
+            users.forEach(user -> result.add(user.getOpenId()));
+        }
+        return result;
     }
 }
