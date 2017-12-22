@@ -1,9 +1,11 @@
 package com.winsky.dao;
 
 import com.winsky.bean.DiseaseBean;
+import com.winsky.bean.DiseaseQueryBean;
 import com.winsky.enums.UserTypeEnum;
 import com.winsky.page.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,29 +24,38 @@ public class DiseaseDAO extends BaseDAO {
      * @param page
      * @return
      */
-    public List<DiseaseBean> getPageList(Page page, DiseaseBean diseaseBean) {
+    public List<DiseaseBean> getPageList(Page page, DiseaseQueryBean queryBean) {
         String sql = "select a.* from disease a ";
         List<Object> objectList = new ArrayList<Object>();
-        String sqlWhere = " where 1=1 ";
-        if (diseaseBean != null) {
-            if (diseaseBean.getId() != null) {
-                objectList.add(diseaseBean.getId());
-                sqlWhere += " AND a.id = ? ";
+        StringBuilder sqlWhere = new StringBuilder(" where 1=1 ");
+        if (queryBean != null) {
+            if (queryBean.getId() != null) {
+                objectList.add(queryBean.getId());
+                sqlWhere.append(" AND a.id = ? ");
             }
-            if (diseaseBean.getOpenId() != null && diseaseBean.getOpenId().trim().length() > 0) {
-                objectList.add(diseaseBean.getOpenId());
-                sqlWhere += " AND a.open_id = ? ";
+            List<String> openIds = queryBean.getOpenIds();
+            if (!CollectionUtils.isEmpty(openIds)) {
+                sqlWhere.append(" AND ( ");
+                for (int i = 0; i < openIds.size(); i++) {
+                    String openId = openIds.get(i);
+                    objectList.add(openId);
+                    sqlWhere.append(" a.open_id = ? ");
+                    if (i != openIds.size() - 1) {
+                        sqlWhere.append(" or ");
+                    }
+                }
+                sqlWhere.append(" ) ");
             }
-            if (diseaseBean.getCreateTime() != null) {
-                long today = diseaseBean.getCreateTime();
+            if (queryBean.getCreateTime() != null) {
+                long today = queryBean.getCreateTime();
                 long tomorrow = today + 24 * 3600;
                 objectList.add(today);
                 objectList.add(tomorrow);
-                sqlWhere += " AND a.create_time >= ? and a.create_time < ?";
+                sqlWhere.append(" AND a.create_time >= ? and a.create_time < ?");
             }
-            if (diseaseBean.getLastChat() != null) {
-                objectList.add(diseaseBean.getLastChat());
-                sqlWhere += " AND a.last_chat = ? ";
+            if (queryBean.getLastChat() != null) {
+                objectList.add(queryBean.getLastChat());
+                sqlWhere.append(" AND a.last_chat = ? ");
             }
         }
         sql = sql + sqlWhere;

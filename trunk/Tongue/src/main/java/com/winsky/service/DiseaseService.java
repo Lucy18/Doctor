@@ -1,10 +1,7 @@
 package com.winsky.service;
 
 import com.winsky.Config;
-import com.winsky.bean.ChatBean;
-import com.winsky.bean.DiseaseBean;
-import com.winsky.bean.PhotoBean;
-import com.winsky.bean.UserBean;
+import com.winsky.bean.*;
 import com.winsky.dao.DiseaseDAO;
 import com.winsky.enums.UserTypeEnum;
 import com.winsky.page.Page;
@@ -33,8 +30,8 @@ public class DiseaseService {
     @Resource
     private PhotoService photoService;
 
-    public List<DiseaseVO> getCoverList(Page page, DiseaseBean diseaseBean) {
-        List<DiseaseBean> beans = diseaseDAO.getPageList(page, diseaseBean);
+    public List<DiseaseVO> getCoverList(Page page, DiseaseQueryBean diseaseQueryBean) {
+        List<DiseaseBean> beans = diseaseDAO.getPageList(page, diseaseQueryBean);
         List<DiseaseVO> diseases = new ArrayList<>();
         beans.forEach(bean -> {
             DiseaseVO vo = new DiseaseVO(bean);

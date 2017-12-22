@@ -3,10 +3,7 @@ package com.winsky.client.api;
 import com.winsky.APIUtil;
 import com.winsky.TimeUtil;
 import com.winsky.Transaction;
-import com.winsky.bean.ChatBean;
-import com.winsky.bean.DiseaseBean;
-import com.winsky.bean.PhotoBean;
-import com.winsky.bean.UserBean;
+import com.winsky.bean.*;
 import com.winsky.page.Page;
 import com.winsky.service.DiseaseService;
 import com.winsky.service.PhotoService;
@@ -14,6 +11,7 @@ import com.winsky.service.UserService;
 import com.winsky.vo.DiseaseVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -43,6 +41,9 @@ public class DiseaseAPI {
         List<String> openIds = null;
         if (userName != null) {
             openIds = userService.getOpenIdByName(userName);
+            if (CollectionUtils.isEmpty(openIds)) {
+                return APIUtil.genPageDataObject(new ArrayList(), page);
+            }
         }
         return getDiseases(page, openIds, date);
     }
@@ -61,18 +62,15 @@ public class DiseaseAPI {
     private Object getDiseases(Page page, List<String> openIds, String date) {
         DiseaseBean diseaseBean = new DiseaseBean();
         if (date != null) diseaseBean.setCreateTime(TimeUtil.dateStrToLong(date));
+        DiseaseQueryBean queryBean = new DiseaseQueryBean(diseaseBean);
 
         if (openIds == null) {
-            List<DiseaseVO> diseases = diseaseService.getCoverList(page, diseaseBean);
+            List<DiseaseVO> diseases = diseaseService.getCoverList(page, queryBean);
             return APIUtil.genPageDataObject(diseases, page);
         } else {
-            List<DiseaseVO> result = new ArrayList<>();
-            for (String openId : openIds) {
-                diseaseBean.setOpenId(openId);
-                List<DiseaseVO> diseases = diseaseService.getCoverList(page, diseaseBean);
-                result.addAll(diseases);
-            }
-            return APIUtil.genPageDataObject(result, page);
+            queryBean.addOpenIds(openIds);
+            List<DiseaseVO> diseases = diseaseService.getCoverList(page, queryBean);
+            return APIUtil.genPageDataObject(diseases, page);
         }
     }
 
