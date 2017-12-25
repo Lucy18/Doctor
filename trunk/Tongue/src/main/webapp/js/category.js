@@ -4,7 +4,7 @@ $(function () {
     $
         .ajax({
             type: "get",
-            url: "http://www.ufengtech.xyz/Tongue/api/category/getChildByName",
+            url: "/Tongue/api/category/getChildByName",
             data: {
                 "name": "舌苔"
             },
@@ -168,7 +168,7 @@ $('#modify-level-1-submit').on('click', function (e) {
     var jsonString = JSON.stringify(j);
 
     $.ajax({
-        url: 'http://www.ufengtech.xyz/Tongue/api/category/update',
+        url: '/Tongue/api/category/update',
         type: 'post',
         dataType: 'json',
         data: {
@@ -191,7 +191,7 @@ $('#remove-submit').on('click', function (e) {
     var id = $('#hiddenId').val();
 
     $.ajax({
-        url: 'http://www.ufengtech.xyz/Tongue/api/category/del',
+        url: '/Tongue/api/category/del',
         type: 'post',
         dataType: 'json',
         data: {
@@ -223,7 +223,7 @@ $('#add-level-1-submit').on('click', function () {
     var jsonString = JSON.stringify(j);
 
     $.ajax({
-        url: 'http://www.ufengtech.xyz/Tongue/api/category/add',
+        url: '/Tongue/api/category/add',
         type: 'post',
         dataType: 'json',
         data: {
