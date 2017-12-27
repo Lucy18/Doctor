@@ -11,7 +11,7 @@ $(function() {
     $
         .ajax({
             type: "get",
-            url: "http://www.ufengtech.xyz/Tongue/api/category/getChildByName",
+            url: "/Tongue/api/category/getChildByName",
             data: {
                 "name": "舌苔"
             },
@@ -117,7 +117,7 @@ $(function() {
 
 	$.ajax({
 		type : "get",
-		url : "http://www.ufengtech.xyz/Tongue/api/disease/getUserInfo",
+		url : "/Tongue/api/disease/getUserInfo",
 		data : {
 			"diseaseId" : id
 		},
@@ -140,7 +140,7 @@ $(function() {
 	$
 			.ajax({
 				type : "get",
-				url : "http://www.ufengtech.xyz/Tongue/api/chat/getChat",
+				url : "/Tongue/api/chat/getChat",
 				data : {
 					"diseaseId" : id
 				},
@@ -257,7 +257,7 @@ $('#addLabelBtn').on('click',function(event) {
             var jsonString = JSON.stringify(j);
 
             $.ajax({
-                url: 'http://www.ufengtech.xyz/Tongue/api/photoCategory/add',
+                url: '/Tongue/api/photoCategory/add',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -286,7 +286,7 @@ function remove(object,theid,labelID){
 
 	if(confirm("确定删除该标签？")){
         $.ajax({
-            url: 'http://www.ufengtech.xyz/Tongue/api/photoCategory/del',
+            url: '/Tongue/api/photoCategory/del',
             type: 'get',
             dataType: 'json',
             data: {
@@ -314,7 +314,7 @@ $('#replyBtn').on('click',function(event) {
     }
     else{
         $.ajax({
-            url: 'http://www.ufengtech.xyz/Tongue/api/chat/add',
+            url: '/Tongue/api/chat/add',
             type: 'post',
             dataType: 'json',
             data: {

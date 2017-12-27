@@ -38,7 +38,7 @@ function getDiseases(){
 
     $.ajax({
         type: "post",
-        url: "http://www.ufengtech.xyz/Tongue/api/disease/getDiseases",
+        url: "/Tongue/api/disease/getDiseases",
         data: postData,
         //data: {"para": 1},
         cache: false,
