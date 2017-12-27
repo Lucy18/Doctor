@@ -9,7 +9,7 @@ public class Config {
     /**
      * 服务器地址
      */
-    public static final String HOST = "http://www.ufengtech.xyz/";
+    public static final String HOST = "http://ww.ufengtech.xyz/";
 
     /**
      * 图片顶层分类的pid
